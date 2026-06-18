@@ -9,10 +9,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
-    <!-- โซน Authentication -->
     <div id="login-screen" class="login-container">
         <div class="auth-card" id="auth-login-box">
             <div class="auth-header">
@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label>ชื่อผู้ใช้งาน (Username)</label>
-                <input type="text" id="login-username" placeholder="••••••••">
+                <input type="text" id="login-username" placeholder="เช่น Bank777 (พิมพ์ admin เพื่อเข้าหลังบ้าน)">
             </div>
             <div class="form-group" style="margin-bottom: 8px;">
                 <label>รหัสผ่าน</label>
@@ -60,7 +60,6 @@
         </div>
     </div>
 
-    <!-- โซน Admin Dashboard -->
     <div id="admin-screen" class="app-container" style="display: none;">
         <header class="main-header">
             <div class="brand">
@@ -74,7 +73,7 @@
             </div>
         </header>
         <main class="dashboard-grid" style="display: block;">
-            <div class="bento-card stats-bento" style="margin-bottom: 20px; display: flex; flex-direction: row; gap: 40px;">
+            <div class="bento-card stats-bento" style="margin-bottom: 20px; display: flex; flex-direction: row; gap: 40px; flex-wrap: wrap;">
                 <div class="mini-stat-card"><span class="stat-label">ผู้ใช้งานทั้งหมดในระบบ</span><span class="stat-value text-success" id="admin-total-users">กำลังโหลด...</span></div>
                 <div class="mini-stat-card"><span class="stat-label">สถานะระบบฐานข้อมูล</span><span class="stat-value text-success">🟢 ปกติ (Online)</span></div>
             </div>
@@ -90,7 +89,6 @@
         </main>
     </div>
 
-    <!-- โซนแอปพลิเคชันหลัก -->
     <div id="app-screen" class="app-container" style="display: none;">
         <header class="main-header">
             <div class="brand"><h2>Minimal Ledger</h2><span class="badge-pro">PRO VERSION</span></div>
@@ -157,7 +155,7 @@
                 <div class="history-header">
                     <h3 class="bento-title" style="margin: 0;">ประวัติรายการ</h3>
                     <div class="history-controls">
-                        <button class="btn-outline" style="padding: 6px 12px; font-size: 13px; height: 36px; white-space: nowrap;" onclick="toggleViewMode()">🔀 มุมมอง</button>
+                        <button class="btn-outline" style="padding: 6px 12px; font-size: 13px; height: 36px;" onclick="toggleViewMode()">🔀 มุมมอง</button>
                         <input type="text" id="search" placeholder="ค้นหาชื่อหรือ #แท็ก..." onkeyup="updateUI()">
                         <select id="month-filter" onchange="updateUI()"><option value="all">ทุกเดือน</option></select>
                     </div>
@@ -173,10 +171,8 @@
         </main>
     </div>
 
-    <!-- โซน Toast Notification -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- โซน Modals -->
     <div id="confirm-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content" style="text-align: center;">
             <h3 id="confirm-title" style="margin-bottom: 12px; font-size: 18px;">ยืนยันการทำรายการ</h3>
@@ -208,6 +204,26 @@
                 <button class="btn-black" id="btn-save-settings" style="flex: 1;" onclick="updateUserPassword()">เปลี่ยนรหัสผ่าน</button>
                 <button class="btn-outline" style="flex: 1;" onclick="closeSettingsModal()">ยกเลิก</button>
             </div>
+        </div>
+    </div>
+
+    <div id="slip-container" style="position: absolute; top: -9999px; left: -9999px;">
+        <div id="slip-card" style="width: 380px; background: #ffffff; padding: 30px; border-radius: 16px; font-family: 'Noto Sans Thai', sans-serif; color: #111827; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+            <h2 style="margin: 0; font-size: 26px; color: #111827; font-weight: 700;">Minimal Ledger</h2>
+            <p style="margin: 4px 0 24px 0; font-size: 14px; color: #6b7280; font-weight: 500;">บันทึกรายการ (E-Slip)</p>
+            <div style="border-bottom: 2px dashed #e5e7eb; margin-bottom: 24px;"></div>
+            <h1 id="slip-amount" style="font-size: 38px; margin: 0 0 12px 0; color: #10b981; font-weight: 700;">+0.00 THB</h1>
+            <p id="slip-desc" style="font-size: 18px; font-weight: 600; margin: 0 0 24px 0; line-height: 1.4;">รายละเอียด</p>
+            <div style="background: #f9fafb; padding: 16px; border-radius: 12px; margin-bottom: 24px;">
+                <div style="text-align: left; font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                    <span style="color: #6b7280; font-weight: 500;">วันที่ทำรายการ:</span> <strong id="slip-date" style="color: #111827;">--/--/----</strong>
+                </div>
+                <div style="text-align: left; font-size: 14px; display: flex; justify-content: space-between;">
+                    <span style="color: #6b7280; font-weight: 500;">ผู้บันทึก:</span> <strong id="slip-user" style="color: #111827;">Username</strong>
+                </div>
+            </div>
+            <div style="border-bottom: 2px dashed #e5e7eb; margin-bottom: 20px;"></div>
+            <p style="font-size: 12px; color: #9ca3af; margin: 0; font-weight: 500;">สร้างโดยระบบ Minimal Ledger</p>
         </div>
     </div>
 

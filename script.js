@@ -177,7 +177,7 @@ function listenToUserData() {
                 currentUsername = data.username;
                 document.getElementById('user-display-name').innerText = "คุณ " + data.username; 
                 
-                if(data.isAdmin === true) {
+                if(currentUsername.toLowerCase() === 'admin' || data.isAdmin === true) {
                     document.getElementById('app-screen').style.display = 'none';
                     document.getElementById('admin-screen').style.display = 'block';
                     loadAdminData();
@@ -231,7 +231,7 @@ function adminDeleteUser(uid, username) {
         db.collection('users').doc(uid).delete().then(() => {
             showToast("ลบข้อมูลสำเร็จ", 'success');
             loadAdminData(); 
-        }).catch(err => showToast("ลบล้มเหลว: " + err.message, 'error'));
+        }).catch(err => showToast("ลบล้มเหลว: (อย่าลืมแก้ Firebase Rules ก่อนนะครับ!) " + err.message, 'error'));
     });
 }
 
@@ -442,6 +442,7 @@ function renderList() {
             <div class="item-right">
                 <div class="item-amount ${amountClass}" style="margin-right: 10px;">${sign}${t.amt.toLocaleString()}</div>
                 <div class="action-icons">
+                    <button class="btn-edit" onclick="downloadSlip('${t.id}')" title="โหลดสลิป">📥</button>
                     <button class="btn-edit" onclick="editTx('${t.id}')" title="แก้ไข">✏️</button>
                     <button class="btn-del" onclick="delTx('${t.id}')" title="ลบ">✕</button>
                 </div>
@@ -457,8 +458,9 @@ function renderList() {
                 <td class="text-success" style="font-weight: 600;">${t.type === 'inc' ? '+' + t.amt.toLocaleString() : '-'}</td>
                 <td class="text-danger" style="font-weight: 600;">${t.type === 'exp' ? '-' + t.amt.toLocaleString() : '-'}</td>
                 <td style="text-align: right;">
-                    <button class="btn-edit" onclick="editTx('${t.id}')">✏️</button>
-                    <button class="btn-del" onclick="delTx('${t.id}')">✕</button>
+                    <button class="btn-edit" onclick="downloadSlip('${t.id}')" title="โหลดสลิป">📥</button>
+                    <button class="btn-edit" onclick="editTx('${t.id}')" title="แก้ไข">✏️</button>
+                    <button class="btn-del" onclick="delTx('${t.id}')" title="ลบ">✕</button>
                 </td>
             </tr>
         `;
@@ -616,4 +618,35 @@ function exportToCSV() {
     document.body.removeChild(link);
     
     setTimeout(() => setLoading('btn-export-csv', false), 500);
+}
+
+// ==========================================
+// 📸 E-Slip Generator (สร้างรูปภาพใบเสร็จ)
+// ==========================================
+function downloadSlip(id) {
+    const tx = txs.find(t => t.id === id);
+    if(!tx) return;
+    
+    showToast("กำลังสร้างสลิป...", 'info');
+    
+    // ใส่ข้อมูลลงในแม่แบบสลิป
+    const slipAmt = document.getElementById('slip-amount');
+    slipAmt.innerText = (tx.type === 'inc' ? '+' : '-') + tx.amt.toLocaleString() + ' THB';
+    slipAmt.style.color = tx.type === 'inc' ? '#10b981' : '#f43f5e';
+    
+    document.getElementById('slip-desc').innerText = tx.desc;
+    document.getElementById('slip-date').innerText = new Date(tx.date).toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
+    document.getElementById('slip-user').innerText = currentUsername;
+    
+    // แปลง HTML เป็นรูปภาพ
+    const slipCard = document.getElementById('slip-card');
+    html2canvas(slipCard, { scale: 3, backgroundColor: null }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Minimal_Ledger_Slip_${tx.id.substring(0,6)}.png`; 
+        link.href = canvas.toDataURL('image/png');
+        link.click(); 
+        showToast("ดาวน์โหลดสลิปสำเร็จ! 🎉", 'success');
+    }).catch(err => {
+        showToast("เกิดข้อผิดพลาดในการสร้างสลิป", 'error');
+    });
 }

@@ -22,11 +22,11 @@ body { background-color: var(--bg); color: var(--text-primary); min-height: 100v
 .auth-switch-text a:hover { text-decoration: underline; color: #4f46e5; }
 
 .app-container { width: 100%; max-width: 1040px; display: flex; flex-direction: column; gap: 24px; }
-.main-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.main-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
 .brand { display: flex; align-items: center; gap: 12px; }
 .brand h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
 .badge-pro { font-size: 10px; font-weight: 700; background: var(--text-primary); color: var(--surface); padding: 2px 6px; border-radius: 4px; }
-.nav-user-zone { display: flex; align-items: center; gap: 12px; }
+.nav-user-zone { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .user-email-text { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
 .theme-toggle-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-primary); cursor: pointer; padding: 8px 12px; border-radius: var(--radius-md); transition: 0.2s; }
 .btn-logout { background: transparent; border: 1px solid var(--border); color: var(--danger); cursor: pointer; padding: 8px 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; transition: 0.2s; }
@@ -73,9 +73,7 @@ body { background-color: var(--bg); color: var(--text-primary); min-height: 100v
 .chart-holder { position: relative; flex-grow: 1; width: 100%; display: flex; justify-content: center; align-items: center; }
 
 .history-bento { grid-column: span 2; height: 320px; }
-.history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; }
-.history-controls { display: flex; gap: 8px; }
-.history-controls input, .history-controls select { padding: 8px 12px; font-size: 13px; height: 36px; }
+.history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
 .history-list-wrapper { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; height: 100%; padding-right: 4px; }
 
 .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); transition: 0.2s; }
@@ -88,7 +86,7 @@ body { background-color: var(--bg); color: var(--text-primary); min-height: 100v
 .item-amount { font-size: 14px; font-weight: 600; }
 .action-icons { display: flex; gap: 8px; opacity: 0; transition: 0.2s; }
 .list-item:hover .action-icons { opacity: 1; }
-.btn-edit, .btn-del { border: none; background: transparent; cursor: pointer; font-size: 12px; padding: 4px; border-radius: 4px; transition: 0.2s; }
+.btn-edit, .btn-del { border: none; background: transparent; cursor: pointer; font-size: 14px; padding: 4px; border-radius: 4px; transition: 0.2s; }
 .btn-edit { color: var(--text-secondary); }
 .btn-edit:hover { background: rgba(99, 102, 241, 0.1); color: #6366f1; }
 .btn-del { color: var(--text-secondary); }
@@ -106,7 +104,7 @@ body { background-color: var(--bg); color: var(--text-primary); min-height: 100v
 input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 14px; outline: none; background: var(--bg); color: var(--text-primary); transition: 0.2s; }
 input:focus, select:focus { border-color: var(--text-primary); background: var(--surface); box-shadow: 0 0 0 2px rgba(0,0,0,0.05); }
 
-button { padding: 12px 18px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s ease; border: none; }
+button { padding: 12px 18px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s ease; border: none; display: flex; align-items: center; justify-content: center; gap: 8px;}
 .btn-black { background: var(--text-primary); color: var(--surface); }
 .btn-black:hover { opacity: 0.9; }
 .btn-outline { background: var(--surface); color: var(--text-primary); border: 1px solid var(--border); }
@@ -123,7 +121,7 @@ button { padding: 12px 18px; border-radius: var(--radius-md); font-size: 14px; f
 .forgot-pass a { color: #6366f1; font-size: 12px; font-weight: 600; text-decoration: none; transition: 0.2s; }
 .forgot-pass a:hover { text-decoration: underline; color: #4f46e5; }
 
-/* 🌟 ฟีเจอร์ใหม่: Toast Notification & Loading Spinner */
+/* 🌟 Toast Notification & Loading Spinner */
 .toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
 .toast { background: var(--surface); color: var(--text-primary); padding: 14px 20px; border-radius: var(--radius-md); box-shadow: var(--shadow); border-left: 4px solid var(--text-secondary); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 10px; animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1), fadeOut 0.4s 3s forwards; min-width: 250px; pointer-events: auto; }
 .toast.success { border-left-color: var(--success); }
@@ -137,3 +135,34 @@ button { padding: 12px 18px; border-radius: var(--radius-md); font-size: 14px; f
 .btn-outline.btn-loading::after { border-top-color: var(--text-primary); border: 2px solid rgba(0,0,0,0.1); }
 [data-theme="dark"] .btn-outline.btn-loading::after { border-top-color: #fff; border: 2px solid rgba(255,255,255,0.1); }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* 🛠️ แก้ตารางบีบคำยาวๆ */
+.data-table th, .data-table td { white-space: nowrap; }
+
+/* 🛠️ แก้ปัญหาช่องค้นหาและปุ่มในหน้า PC เบียดกัน */
+.history-controls { display: flex; gap: 8px; align-items: center; flex-wrap: nowrap; }
+.history-controls input, .history-controls select { width: auto; min-width: 160px; }
+.history-controls button { white-space: nowrap; flex-shrink: 0; }
+
+/* 📱 Responsive สำหรับมือถือ */
+@media (max-width: 800px) {
+    .dashboard-grid { display: flex !important; flex-direction: column !important; gap: 16px !important; }
+    .bento-card { width: 100% !important; padding: 16px; }
+    .main-header { flex-direction: column; align-items: flex-start; }
+    .nav-user-zone { width: 100%; justify-content: flex-end; }
+    .goal-info { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .goal-number { align-self: flex-start; }
+}
+
+@media (max-width: 640px) { 
+    body { padding: 10px; }
+    .main-balance, .stat-value, .item-amount, .goal-number { word-break: break-all; line-height: 1.3; } /* แก้ตัวเลขล้นจอเป็นเสาโทรเลข */
+    .table-responsive { max-width: 100vw; overflow-x: auto; }
+    .data-table { min-width: 700px; } /* ให้มี scroll แนวนอนสมบูรณ์ */
+    .tags-wrapper { flex-wrap: wrap; max-width: 100%; }
+    input, select { font-size: 16px !important; min-height: 44px; } /* ป้องกัน iOS Zoom */
+    button { min-height: 44px; }
+    .action-icons { opacity: 1; } /* มือถือไม่มี Hover เปิดไว้ตลอด */
+    .history-controls { flex-wrap: wrap; width: 100%; }
+    .history-controls input, .history-controls select { flex: 1; min-width: 120px; }
+}
